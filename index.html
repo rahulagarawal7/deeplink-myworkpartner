@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Opening App...</title>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const type = params.get("type");
+      const campaignId = params.get("campaignId");
+
+      // Adjust this regex to match your actual campaign ID format
+      const isValidCampaignId = (id) =>
+        id && /^[a-zA-Z0-9_-]+$/.test(id.trim());
+
+      let deepLink = "myworkpartner://home";
+
+      // Priority 1 → campaign details (only if campaignId is valid)
+      if (isValidCampaignId(campaignId)) {
+        deepLink = `myworkpartner://campaigns/${campaignId.trim()}`;
+      }
+      // Priority 2 → type routes
+      else if (type) {
+        switch (type) {
+          case "home":
+            deepLink = "myworkpartner://home";
+            break;
+          case "wallet":
+            deepLink = "myworkpartner://wallet";
+            break;
+          case "campaignList":
+            deepLink = "myworkpartner://campaigns";
+            break;
+          case "profile":
+            deepLink = "myworkpartner://profile";
+            break;
+          case "myProfile":
+            deepLink = "myworkpartner://my-profile";
+            break;
+          case "kyc":
+            deepLink = "myworkpartner://kyc";
+            break;
+          case "sell":
+            deepLink = "myworkpartner://sell";
+            break;
+          case "leads":
+            deepLink = "myworkpartner://leads";
+            break;
+          // any unrecognized type falls through, deepLink stays "home"
+        }
+      }
+
+      // Trigger deep link
+      window.location.href = deepLink;
+
+      // Fallback if app not installed
+      setTimeout(() => {
+        window.location.href =
+          "https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME";
+      }, 1000);
+    </script>
+  </head>
+  <body>
+    <p>Opening MyWorkPartner app…</p>
+  </body>
+</html>
