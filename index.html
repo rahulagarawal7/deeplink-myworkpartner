@@ -4,16 +4,19 @@
     <meta charset="UTF-8" />
     <title>Opening App...</title>
     <script>
-      const path = window.location.pathname; // e.g. "/campaigns/123" or "/wallet"
-      const segments = path.split("/").filter(Boolean); // ["campaigns", "123"] or ["wallet"]
+      const path = window.location.pathname; // e.g. "/instruments/123" or "/wallet"
+      const segments = path.split("/").filter(Boolean); // ["instruments", "123"] or ["wallet"]
 
       const isValidCampaignId = id => id && /^[a-zA-Z0-9_-]+$/.test(id.trim());
 
       let deepLink = "myworkpartner://home"; // default fallback
 
-      if (segments[0] === "campaigns" && isValidCampaignId(segments[1])) {
-        deepLink = `myworkpartner://campaigns/${segments[1].trim()}`;
-      } else {
+      if (segments[0] === "instruments" && isValidCampaignId(segments[1])) {
+        deepLink = `myworkpartner://instruments/${segments[1].trim()}`;
+      } else if (segments[0] === "leads" && isValidCampaignId(segments[1])){
+        deepLink = `myworkpartner://leads/${segments[1].trim()}`;
+      }
+      else {
         switch (segments[0]) {
           case "home":
             deepLink = "myworkpartner://home";
@@ -21,8 +24,8 @@
           case "wallet":
             deepLink = "myworkpartner://wallet";
             break;
-          case "campaigns":
-            deepLink = "myworkpartner://campaigns";
+          case "instruments":
+            deepLink = "myworkpartner://instruments";
             break;
           case "profile":
             deepLink = "myworkpartner://profile";
